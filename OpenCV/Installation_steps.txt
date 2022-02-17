@@ -1,0 +1,36 @@
+1. There is a default opencv version installed in the system which can be accessed using the commmand - `pkg-config --cflags --libs opencv4`
+
+So basically to compile any program do something along these lines:
+
+output: vidDisplay.o filters.o
+	g++ vidDisplay.o filters.o -o output `pkg-config --cflags --libs opencv4`
+
+img: imgDisplay.cpp
+	g++ imgDisplay.cpp -o img `pkg-config --cflags --libs opencv4`
+
+filters.o: filters.cpp filters.h
+	g++ -c filters.cpp `pkg-config --cflags --libs opencv4`
+
+vidDisplay.o: vidDisplay.cpp
+	g++ -c vidDisplay.cpp `pkg-config --cflags --libs opencv4`
+
+clean:
+	rm *.o output img 
+
+========================================================
+2. To install multiple versions of OpenCv in your system:
+
+2.1 Download desired opencv version in the desired folder (I generally make a foldedr libs on my home for all these extra libraries).
+2.2 Make a parent folder with following subdirs - opencv-5.x (or whatever version it is), build, installed 
+2.3 In the build folder, run this command - cmake -DCMAKE_INSTALL_PREFIX=/home/aniket/libs/opencv_5_0_0/installed -DCMAKE_BUILD_TYPE="Release" ../opencv-5.x/
+	Change the paths as required
+2.4 cmake --build -j8 (in the build folder) 
+2.5 or use make -j8 alternatively
+2.6 make install (This will generate the installation files in the installed folder that was created earlier)
+2.7 Download as many versions as you want using this method.
+
+========================================================
+3. Linking specific opencv version to C++ files to compile them
+
+Still figureing this out. 
+But use the -L, -I linking capabilities. 
